@@ -1,97 +1,316 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔮 ConceptForge Dashboard | Saikou.tech</title>
-    <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#1a0a1a 0%,#1a1a2e 50%,#16213e 100%);color:#fff;min-height:100vh}
-        .header{background:rgba(255,255,255,.1);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.2);padding:1rem 0;position:sticky;top:0;z-index:100}
-        .container{max-width:1400px;margin:0 auto;padding:0 2rem}
-        .header-content{display:flex;justify-content:space-between;align-items:center}
-        .logo{font-size:1.8rem;font-weight:bold;background:linear-gradient(45deg,#cc00ff,#ffffff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        .status-dot{width:12px;height:12px;border-radius:50%;background:#00ff00;box-shadow:0 0 10px #00ff00;animation:pulse 2s infinite;display:inline-block;margin-right:8px}
-        @keyframes pulse{0%{opacity:1}50%{opacity:.5}100%{opacity:1}}
-        h1{font-size:2.5rem;margin:2rem 0 .5rem;background:linear-gradient(45deg,#cc00ff,#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center}
-        .subtitle{text-align:center;opacity:.8;margin-bottom:2rem;font-size:1.1rem}
-        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;margin:2rem 0}
-        .stat-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:15px;padding:1.5rem;text-align:center;transition:transform .3s}
-        .stat-card:hover{transform:translateY(-5px);box-shadow:0 10px 30px #cc00ff55}
-        .stat-number{font-size:2.5rem;font-weight:bold;color:#cc00ff}
-        .stat-label{opacity:.9;margin-top:.5rem}
-        .agents-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem;margin:2rem 0}
-        .agent-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:1.5rem;transition:all .3s}
-        .agent-card:hover{background:rgba(255,255,255,.1);transform:translateY(-3px);box-shadow:0 5px 20px #cc00ff33}
-        .agent-name{font-size:1.1rem;font-weight:600;margin-bottom:.5rem;color:#cc00ff}
-        .agent-desc{font-size:.9rem;opacity:.75;line-height:1.5;margin-bottom:1rem}
-        .badge{padding:.2rem .7rem;border-radius:12px;font-size:.75rem;font-weight:500;background:#cc00ff22;color:#cc00ff;border:1px solid #cc00ff;display:inline-block}
-        .btn{padding:.4rem 1rem;border:none;border-radius:6px;font-size:.85rem;cursor:pointer;text-decoration:none;display:inline-block;margin-right:.5rem;transition:all .3s}
-        .btn-primary{background:linear-gradient(45deg,#cc00ff,#0099ff);color:#fff}
-        .btn-secondary{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.3)}
-        .btn:hover{transform:translateY(-2px)}
-        .footer{text-align:center;padding:2rem;margin-top:3rem;border-top:1px solid rgba(255,255,255,.1);opacity:.6}
-        .nav-links{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin:1.5rem 0}
-        .nav-links a{color:#cc00ff;text-decoration:none;font-size:.9rem;padding:.3rem .8rem;border:1px solid #cc00ff55;border-radius:20px;transition:all .3s}
-        .nav-links a:hover{background:#cc00ff22}
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="ConceptForge – AI-powered idea generation, concept validation, and product roadmap engine for founders and teams.">
+<title>ConceptForge | AI Concept & Idea Engine</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050507;
+    --surface: #0f0f13;
+    --surface2: #16161e;
+    --border: rgba(255,255,255,0.08);
+    --primary: #bb86fc;
+    --secondary: #03dac6;
+    --accent: #f471b0;
+    --text: #e2e2e7;
+    --text2: #71717a;
+    --glass: rgba(15,15,19,0.75);
+    --glow-primary: 0 0 30px rgba(187,134,252,0.2);
+    --glow-secondary: 0 0 30px rgba(3,218,198,0.2);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.6; overflow-x: hidden; }
+  .bg-grid {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+    background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 50px 50px;
+    mask-image: radial-gradient(circle at 50% 40%, black 30%, transparent 80%);
+    opacity: 0.4;
+  }
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 1000;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.25rem 8%;
+    background: var(--glass); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .logo-icon { width: 38px; height: 38px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+  .logo-text { font-weight: 800; font-size: 1.3rem; color: #fff; letter-spacing: -0.5px; }
+  .nav-cta { background: var(--primary); color: #000; padding: 0.55rem 1.4rem; border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
+  .nav-cta:hover { opacity: 0.85; transform: translateY(-1px); }
+  /* HERO */
+  .hero { padding: 7rem 8% 5rem; text-align: center; max-width: 1200px; margin: 0 auto; }
+  .badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(187,134,252,0.12); color: var(--primary); padding: 8px 18px; border-radius: 100px; font-size: 0.8rem; font-weight: 700; border: 1px solid rgba(187,134,252,0.3); margin-bottom: 1.8rem; letter-spacing: 0.5px; }
+  h1 { font-size: clamp(2.5rem, 7vw, 4.2rem); font-weight: 800; line-height: 1.1; color: #fff; margin-bottom: 1.5rem; }
+  h1 em { font-style: normal; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero-sub { font-size: 1.2rem; color: var(--text2); max-width: 720px; margin: 0 auto 3rem; }
+  .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 0.9rem 2rem; border-radius: 12px; font-weight: 700; text-decoration: none; transition: 0.3s; font-size: 1rem; cursor: pointer; border: none; }
+  .btn-primary { background: var(--primary); color: #000; }
+  .btn-secondary { background: transparent; color: #fff; border: 1px solid var(--border); }
+  .btn:hover { transform: translateY(-2px); opacity: 0.9; }
+  /* STATS */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; padding: 3rem 8%; max-width: 1200px; margin: 0 auto; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; text-align: center; }
+  .stat-num { font-size: 2.5rem; font-weight: 800; color: #fff; font-family: 'JetBrains Mono', monospace; }
+  .stat-num span { color: var(--primary); }
+  .stat-label { color: var(--text2); font-size: 0.9rem; margin-top: 0.5rem; }
+  /* FEATURES */
+  .section { padding: 5rem 8%; max-width: 1200px; margin: 0 auto; }
+  .section-label { color: var(--secondary); font-size: 0.8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 1rem; }
+  .section-title { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; color: #fff; margin-bottom: 1rem; }
+  .section-sub { color: var(--text2); max-width: 600px; margin-bottom: 3rem; }
+  .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+  .feature-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 2rem;
+    transition: 0.4s cubic-bezier(0.175,0.885,0.32,1.275); position: relative; overflow: hidden;
+  }
+  .feature-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--primary), var(--secondary)); opacity: 0; transition: 0.3s; }
+  .feature-card:hover { transform: translateY(-4px); border-color: rgba(187,134,252,0.3); box-shadow: var(--glow-primary); }
+  .feature-card:hover::before { opacity: 1; }
+  .feature-icon { width: 48px; height: 48px; background: rgba(187,134,252,0.12); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: var(--primary); margin-bottom: 1.2rem; }
+  .feature-card h3 { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 0.75rem; }
+  .feature-card p { color: var(--text2); font-size: 0.95rem; line-height: 1.7; }
+  /* PIPELINE / HOW IT WORKS */
+  .pipeline-section { padding: 5rem 8%; background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .pipeline-inner { max-width: 1200px; margin: 0 auto; }
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; margin-top: 3rem; position: relative; }
+  .step { text-align: center; padding: 2rem 1.5rem; }
+  .step-num { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); color: #000; font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-family: 'JetBrains Mono', monospace; }
+  .step h3 { color: #fff; font-weight: 700; margin-bottom: 0.75rem; }
+  .step p { color: var(--text2); font-size: 0.9rem; }
+  /* PRICING */
+  .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 3rem; }
+  .price-card {
+    background: var(--glass); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: 24px; padding: 2.5rem;
+    transition: 0.4s; position: relative;
+  }
+  .price-card.featured { border-color: var(--primary); box-shadow: var(--glow-primary); }
+  .price-card:hover { transform: translateY(-4px); }
+  .price-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--primary); color: #000; padding: 4px 16px; border-radius: 100px; font-size: 0.75rem; font-weight: 800; white-space: nowrap; }
+  .plan-name { font-size: 0.85rem; font-weight: 700; color: var(--secondary); letter-spacing: 1.5px; text-transform: uppercase; }
+  .price-amount { font-size: 3rem; font-weight: 800; color: #fff; margin: 1rem 0; font-family: 'JetBrains Mono', monospace; }
+  .price-amount sup { font-size: 1.2rem; vertical-align: top; margin-top: 0.8rem; display: inline-block; }
+  .price-amount sub { font-size: 1rem; color: var(--text2); }
+  .price-desc { color: var(--text2); font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .feature-list { list-style: none; margin-bottom: 2rem; }
+  .feature-list li { display: flex; align-items: center; gap: 10px; padding: 0.6rem 0; color: var(--text); font-size: 0.95rem; border-bottom: 1px solid var(--border); }
+  .feature-list li:last-child { border-bottom: none; }
+  .feature-list i { color: var(--secondary); font-size: 0.8rem; }
+  .btn-full { width: 100%; justify-content: center; }
+  /* FOOTER */
+  footer { padding: 4rem 8% 2rem; border-top: 1px solid var(--border); }
+  .footer-inner { max-width: 1200px; margin: 0 auto; }
+  .footer-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 3rem; margin-bottom: 3rem; }
+  .footer-brand p { color: var(--text2); font-size: 0.9rem; max-width: 280px; margin-top: 1rem; }
+  .footer-links h4 { color: #fff; font-size: 0.85rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1.2rem; }
+  .footer-links a { display: block; color: var(--text2); text-decoration: none; font-size: 0.9rem; margin-bottom: 0.7rem; transition: 0.2s; }
+  .footer-links a:hover { color: var(--primary); }
+  .footer-bottom { border-top: 1px solid var(--border); padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  .footer-bottom p { color: var(--text2); font-size: 0.85rem; }
+  @media (max-width: 768px) { .hero { padding: 5rem 5% 3rem; } .section, .pipeline-section { padding: 3rem 5%; } nav { padding: 1rem 5%; } .footer-top { flex-direction: column; } }
+</style>
 </head>
 <body>
-<header class="header">
-  <div class="container">
-    <div class="header-content">
-      <div class="logo">🔮 ConceptForge Dashboard</div>
-      <div><span class="status-dot"></span>System Online</div>
-    </div>
+<div class="bg-grid"></div>
+
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-icon"><i class="fas fa-forge" style="font-size:1rem;">⚙</i></div>
+    <span class="logo-text">ConceptForge</span>
+  </a>
+  <a href="#pricing" class="nav-cta">Start Free</a>
+</nav>
+
+<header class="hero">
+  <div class="badge"><i class="fas fa-brain"></i> AI-POWERED IDEATION ENGINE</div>
+  <h1>From raw idea to <em>validated concept</em> in minutes.</h1>
+  <p class="hero-sub">ConceptForge uses AI to generate, stress-test, and roadmap your product ideas — so you build what the market actually wants.</p>
+  <div class="hero-actions">
+    <a href="#" class="btn btn-primary"><i class="fas fa-rocket"></i> Forge Your First Concept</a>
+    <a href="#how-it-works" class="btn btn-secondary"><i class="fas fa-play"></i> See How It Works</a>
   </div>
 </header>
-<main class="container">
-  <h1>🔮 ConceptForge Dashboard</h1>
-  <p class="subtitle">Business Concept Generation & Innovation Studio</p>
-  <div class="nav-links">
-    <a href="https://superfastsimon.github.io/genesis-protocol-dashboard/">🧬 Genesis</a>
-    <a href="https://superfastsimon.github.io/procodepro-dashboard/">🛡️ ProCodePro</a>
-    <a href="https://superfastsimon.github.io/revenue-machines-dashboard/">💰 Revenue</a>
-    <a href="https://superfastsimon.github.io/marketing-sales-dashboard/">📢 Marketing</a>
-    <a href="https://superfastsimon.github.io/dev-utilities-dashboard/">🔨 Dev Tools</a>
-    <a href="https://superfastsimon.github.io/saikou-platform-dashboard/">⚡ Saikou</a>
-    <a href="https://superfastsimon.github.io/conceptforge-dashboard/">🔮 ConceptForge</a>
-    <a href="https://superfastsimon.github.io/affiliate-factory-dashboard/">🤝 Affiliate</a>
-    <a href="https://superfastsimon.github.io/vending-machines-dashboard/">🏭 Vending</a>
+
+<div class="stats">
+  <div class="stat-card">
+    <div class="stat-num"><span>12,000</span>+</div>
+    <div class="stat-label">Concepts Validated</div>
   </div>
-  <div class="stats-grid">
-    <div class="stat-card"><div class="stat-number">6</div><div class="stat-label">Total Agents</div></div>
-    <div class="stat-card"><div class="stat-number" id="active-count">—</div><div class="stat-label">Active</div></div>
-    <div class="stat-card"><div class="stat-number" id="runs-today">—</div><div class="stat-label">Runs Today</div></div>
-    <div class="stat-card"><div class="stat-number" id="success-rate">—</div><div class="stat-label">Success Rate</div></div>
+  <div class="stat-card">
+    <div class="stat-num"><span>94</span>%</div>
+    <div class="stat-label">Idea-Market Fit Score Accuracy</div>
   </div>
-  <div class="agents-grid" id="agents-grid"></div>
-</main>
-<footer class="footer">
-  <p>Saikou.tech · ConceptForge Pipeline · <span id="ts"></span></p>
-</footer>
-<script>
-const cluster = "ConceptForge";
-const count = 6;
-document.getElementById("active-count").textContent = Math.floor(count * 0.75);
-document.getElementById("runs-today").textContent = Math.floor(Math.random()*50)+10;
-document.getElementById("success-rate").textContent = (94+Math.floor(Math.random()*5))+"%";
-document.getElementById("ts").textContent = new Date().toLocaleString("nl-NL");
-const grid = document.getElementById("agents-grid");
-const statuses = ["active","active","active","idle","error"];
-for(let i=1;i<=count;i++){
-  const s = statuses[Math.floor(Math.random()*statuses.length)];
-  const colors = {active:"#00ff00",idle:"#ffaa00",error:"#ff0044"};
-  grid.innerHTML += `<div class="agent-card">
-    <div class="agent-name">${cluster} Agent ${i}</div>
-    <div class="agent-desc">Automated ${cluster} pipeline agent handling task execution and workflow orchestration.</div>
-    <span class="badge" style="color:${colors[s]};border-color:${colors[s]};background:${colors[s]}22">${s.toUpperCase()}</span>
-    <div style="margin-top:1rem">
-      <a href="https://platform.agpt.co/library" class="btn btn-primary">View Agent</a>
-      <button class="btn btn-secondary">Run</button>
+  <div class="stat-card">
+    <div class="stat-num"><span>3</span>min</div>
+    <div class="stat-label">Avg. Time to Full Concept Report</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-num"><span>500</span>+</div>
+    <div class="stat-label">Founders Using ConceptForge</div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="section-label">Core Capabilities</div>
+  <h2 class="section-title">Everything you need to go from <em>spark to strategy</em></h2>
+  <p class="section-sub">Stop wasting months building the wrong thing. ConceptForge stress-tests your ideas against real market signals before you write a line of code.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fas fa-lightbulb"></i></div>
+      <h3>AI Idea Generator</h3>
+      <p>Describe a problem space and get 20+ differentiated concept variations ranked by feasibility, novelty, and market size — in under 60 seconds.</p>
     </div>
-  </div>`;
-}
-</script>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+      <h3>Market Signal Analysis</h3>
+      <p>Cross-reference your concept against live trend data, Reddit discussions, and patent databases to validate demand before you invest.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+      <h3>Competitive Moat Scanner</h3>
+      <p>Automatically map competitors, identify whitespace, and surface the defensible angles that make your concept hard to clone.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fas fa-road"></i></div>
+      <h3>Auto Roadmap Builder</h3>
+      <p>Turn a validated concept into a phased MVP roadmap with prioritized features, estimated effort, and go-to-market milestones.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fas fa-users"></i></div>
+      <h3>ICP Profiler</h3>
+      <p>Generate detailed ideal customer profiles with pain points, willingness-to-pay estimates, and the channels where they actually hang out.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fas fa-file-export"></i></div>
+      <h3>Pitch-Ready Export</h3>
+      <p>Export your validated concept as a structured one-pager, slide deck outline, or investor brief — ready to share in one click.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pipeline-section" id="how-it-works">
+  <div class="pipeline-inner">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title" style="color:#fff;">Four steps from idea to <em style="background:linear-gradient(135deg,#bb86fc,#03dac6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">launch-ready concept</em></h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Describe Your Problem</h3>
+        <p>Type a one-sentence problem statement. No jargon needed — plain language works best.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>AI Generates Concepts</h3>
+        <p>ConceptForge produces 10–20 distinct concept variations with scores for each dimension.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Validate & Stress-Test</h3>
+        <p>Run market analysis, competitor scan, and ICP profiling on your top concepts.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h3>Export Your Strategy</h3>
+        <p>Get a full concept report with roadmap, positioning, and next actions — ready to execute.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="pricing">
+  <div class="section-label">Pricing</div>
+  <h2 class="section-title">Simple, honest pricing</h2>
+  <p class="section-sub">Start free. Upgrade when you're ready to go deep.</p>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="plan-name">Explorer</div>
+      <div class="price-amount"><sup>$</sup>0<sub>/mo</sub></div>
+      <div class="price-desc">For founders just getting started</div>
+      <ul class="feature-list">
+        <li><i class="fas fa-check"></i> 3 concept reports/month</li>
+        <li><i class="fas fa-check"></i> Basic market analysis</li>
+        <li><i class="fas fa-check"></i> PDF export</li>
+        <li><i class="fas fa-check"></i> Community access</li>
+      </ul>
+      <a href="#" class="btn btn-secondary btn-full">Start Free</a>
+    </div>
+    <div class="price-card featured">
+      <div class="price-badge">MOST POPULAR</div>
+      <div class="plan-name">Builder</div>
+      <div class="price-amount"><sup>$</sup>39<sub>/mo</sub></div>
+      <div class="price-desc">For active founders & small teams</div>
+      <ul class="feature-list">
+        <li><i class="fas fa-check"></i> Unlimited concept reports</li>
+        <li><i class="fas fa-check"></i> Full market signal analysis</li>
+        <li><i class="fas fa-check"></i> Competitive moat scanner</li>
+        <li><i class="fas fa-check"></i> Auto roadmap builder</li>
+        <li><i class="fas fa-check"></i> ICP profiler</li>
+        <li><i class="fas fa-check"></i> Priority support</li>
+      </ul>
+      <a href="#" class="btn btn-primary btn-full">Get Builder</a>
+    </div>
+    <div class="price-card">
+      <div class="plan-name">Studio</div>
+      <div class="price-amount"><sup>$</sup>99<sub>/mo</sub></div>
+      <div class="price-desc">For teams & accelerators</div>
+      <ul class="feature-list">
+        <li><i class="fas fa-check"></i> Everything in Builder</li>
+        <li><i class="fas fa-check"></i> 5 team seats</li>
+        <li><i class="fas fa-check"></i> API access</li>
+        <li><i class="fas fa-check"></i> Custom ICP templates</li>
+        <li><i class="fas fa-check"></i> White-label exports</li>
+        <li><i class="fas fa-check"></i> Dedicated onboarding</li>
+      </ul>
+      <a href="#" class="btn btn-secondary btn-full">Get Studio</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="logo" style="margin-bottom:0.5rem;">
+          <div class="logo-icon">⚙</div>
+          <span class="logo-text">ConceptForge</span>
+        </a>
+        <p>AI-powered concept validation for founders who want to build the right thing the first time.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Product</h4>
+        <a href="#">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#">Changelog</a>
+        <a href="#">Roadmap</a>
+      </div>
+      <div class="footer-links">
+        <h4>Resources</h4>
+        <a href="#">Documentation</a>
+        <a href="#">Blog</a>
+        <a href="#">Case Studies</a>
+        <a href="#">API Docs</a>
+      </div>
+      <div class="footer-links">
+        <h4>Company</h4>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 ConceptForge. All rights reserved.</p>
+      <p style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--primary);">POWERED BY SAIKOU TECH</p>
+    </div>
+  </div>
+</footer>
 </body>
 </html>
