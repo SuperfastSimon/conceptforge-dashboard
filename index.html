@@ -3,314 +3,153 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="ConceptForge – AI-powered idea generation, concept validation, and product roadmap engine for founders and teams.">
-<title>ConceptForge | AI Concept & Idea Engine</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<title>ConceptForge Dashboard — Saikou.tech</title>
 <style>
-  :root {
-    --bg: #050507;
-    --surface: #0f0f13;
-    --surface2: #16161e;
-    --border: rgba(255,255,255,0.08);
-    --primary: #bb86fc;
-    --secondary: #03dac6;
-    --accent: #f471b0;
-    --text: #e2e2e7;
-    --text2: #71717a;
-    --glass: rgba(15,15,19,0.75);
-    --glow-primary: 0 0 30px rgba(187,134,252,0.2);
-    --glow-secondary: 0 0 30px rgba(3,218,198,0.2);
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; line-height: 1.6; overflow-x: hidden; }
-  .bg-grid {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-    background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
-    background-size: 50px 50px;
-    mask-image: radial-gradient(circle at 50% 40%, black 30%, transparent 80%);
-    opacity: 0.4;
-  }
-  /* NAV */
-  nav {
-    position: sticky; top: 0; z-index: 1000;
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 1.25rem 8%;
-    background: var(--glass); backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-  }
-  .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-  .logo-icon { width: 38px; height: 38px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
-  .logo-text { font-weight: 800; font-size: 1.3rem; color: #fff; letter-spacing: -0.5px; }
-  .nav-cta { background: var(--primary); color: #000; padding: 0.55rem 1.4rem; border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
-  .nav-cta:hover { opacity: 0.85; transform: translateY(-1px); }
-  /* HERO */
-  .hero { padding: 7rem 8% 5rem; text-align: center; max-width: 1200px; margin: 0 auto; }
-  .badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(187,134,252,0.12); color: var(--primary); padding: 8px 18px; border-radius: 100px; font-size: 0.8rem; font-weight: 700; border: 1px solid rgba(187,134,252,0.3); margin-bottom: 1.8rem; letter-spacing: 0.5px; }
-  h1 { font-size: clamp(2.5rem, 7vw, 4.2rem); font-weight: 800; line-height: 1.1; color: #fff; margin-bottom: 1.5rem; }
-  h1 em { font-style: normal; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .hero-sub { font-size: 1.2rem; color: var(--text2); max-width: 720px; margin: 0 auto 3rem; }
-  .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 0.9rem 2rem; border-radius: 12px; font-weight: 700; text-decoration: none; transition: 0.3s; font-size: 1rem; cursor: pointer; border: none; }
-  .btn-primary { background: var(--primary); color: #000; }
-  .btn-secondary { background: transparent; color: #fff; border: 1px solid var(--border); }
-  .btn:hover { transform: translateY(-2px); opacity: 0.9; }
-  /* STATS */
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; padding: 3rem 8%; max-width: 1200px; margin: 0 auto; }
-  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; text-align: center; }
-  .stat-num { font-size: 2.5rem; font-weight: 800; color: #fff; font-family: 'JetBrains Mono', monospace; }
-  .stat-num span { color: var(--primary); }
-  .stat-label { color: var(--text2); font-size: 0.9rem; margin-top: 0.5rem; }
-  /* FEATURES */
-  .section { padding: 5rem 8%; max-width: 1200px; margin: 0 auto; }
-  .section-label { color: var(--secondary); font-size: 0.8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 1rem; }
-  .section-title { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; color: #fff; margin-bottom: 1rem; }
-  .section-sub { color: var(--text2); max-width: 600px; margin-bottom: 3rem; }
-  .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-  .feature-card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 2rem;
-    transition: 0.4s cubic-bezier(0.175,0.885,0.32,1.275); position: relative; overflow: hidden;
-  }
-  .feature-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--primary), var(--secondary)); opacity: 0; transition: 0.3s; }
-  .feature-card:hover { transform: translateY(-4px); border-color: rgba(187,134,252,0.3); box-shadow: var(--glow-primary); }
-  .feature-card:hover::before { opacity: 1; }
-  .feature-icon { width: 48px; height: 48px; background: rgba(187,134,252,0.12); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: var(--primary); margin-bottom: 1.2rem; }
-  .feature-card h3 { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 0.75rem; }
-  .feature-card p { color: var(--text2); font-size: 0.95rem; line-height: 1.7; }
-  /* PIPELINE / HOW IT WORKS */
-  .pipeline-section { padding: 5rem 8%; background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-  .pipeline-inner { max-width: 1200px; margin: 0 auto; }
-  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; margin-top: 3rem; position: relative; }
-  .step { text-align: center; padding: 2rem 1.5rem; }
-  .step-num { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); color: #000; font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-family: 'JetBrains Mono', monospace; }
-  .step h3 { color: #fff; font-weight: 700; margin-bottom: 0.75rem; }
-  .step p { color: var(--text2); font-size: 0.9rem; }
-  /* PRICING */
-  .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 3rem; }
-  .price-card {
-    background: var(--glass); backdrop-filter: blur(10px);
-    border: 1px solid var(--border); border-radius: 24px; padding: 2.5rem;
-    transition: 0.4s; position: relative;
-  }
-  .price-card.featured { border-color: var(--primary); box-shadow: var(--glow-primary); }
-  .price-card:hover { transform: translateY(-4px); }
-  .price-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--primary); color: #000; padding: 4px 16px; border-radius: 100px; font-size: 0.75rem; font-weight: 800; white-space: nowrap; }
-  .plan-name { font-size: 0.85rem; font-weight: 700; color: var(--secondary); letter-spacing: 1.5px; text-transform: uppercase; }
-  .price-amount { font-size: 3rem; font-weight: 800; color: #fff; margin: 1rem 0; font-family: 'JetBrains Mono', monospace; }
-  .price-amount sup { font-size: 1.2rem; vertical-align: top; margin-top: 0.8rem; display: inline-block; }
-  .price-amount sub { font-size: 1rem; color: var(--text2); }
-  .price-desc { color: var(--text2); font-size: 0.9rem; margin-bottom: 1.5rem; }
-  .feature-list { list-style: none; margin-bottom: 2rem; }
-  .feature-list li { display: flex; align-items: center; gap: 10px; padding: 0.6rem 0; color: var(--text); font-size: 0.95rem; border-bottom: 1px solid var(--border); }
-  .feature-list li:last-child { border-bottom: none; }
-  .feature-list i { color: var(--secondary); font-size: 0.8rem; }
-  .btn-full { width: 100%; justify-content: center; }
-  /* FOOTER */
-  footer { padding: 4rem 8% 2rem; border-top: 1px solid var(--border); }
-  .footer-inner { max-width: 1200px; margin: 0 auto; }
-  .footer-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 3rem; margin-bottom: 3rem; }
-  .footer-brand p { color: var(--text2); font-size: 0.9rem; max-width: 280px; margin-top: 1rem; }
-  .footer-links h4 { color: #fff; font-size: 0.85rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1.2rem; }
-  .footer-links a { display: block; color: var(--text2); text-decoration: none; font-size: 0.9rem; margin-bottom: 0.7rem; transition: 0.2s; }
-  .footer-links a:hover { color: var(--primary); }
-  .footer-bottom { border-top: 1px solid var(--border); padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-  .footer-bottom p { color: var(--text2); font-size: 0.85rem; }
-  @media (max-width: 768px) { .hero { padding: 5rem 5% 3rem; } .section, .pipeline-section { padding: 3rem 5%; } nav { padding: 1rem 5%; } .footer-top { flex-direction: column; } }
+  :root{--bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--border:#2a2a42;--accent:#ff6b6b;--accent2:#ffd93d;--success:#00e676;--warn:#ffab00;--text:#e8e8f0;--text2:#9090b0;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;}
+  header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .logo{display:flex;align-items:center;gap:14px;}
+  .logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+  .logo-text{font-size:18px;font-weight:800;} .logo-sub{font-size:11px;color:var(--text2);letter-spacing:2px;text-transform:uppercase;}
+  .back-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:8px 16px;border-radius:8px;font-size:13px;text-decoration:none;transition:all 0.2s;}
+  .back-btn:hover{color:var(--text);border-color:var(--accent);}
+  main{padding:40px 32px;max-width:1400px;margin:0 auto;}
+  .hero{margin-bottom:40px;}
+  .hero h1{font-size:32px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;}
+  .hero p{color:var(--text2);font-size:15px;}
+  .stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:40px;}
+  .stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center;}
+  .stat-n{font-size:28px;font-weight:800;color:var(--accent);}
+  .stat-l{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-top:4px;}
+  .section-title{font-size:13px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:40px;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;position:relative;overflow:hidden;}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(135deg,var(--accent),var(--accent2));}
+  .card-icon{font-size:32px;margin-bottom:12px;}
+  .card-title{font-size:16px;font-weight:700;margin-bottom:8px;}
+  .card-desc{font-size:13px;color:var(--text2);line-height:1.6;}
+  .idea-gen{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:40px;}
+  .idea-gen h3{font-size:15px;font-weight:700;margin-bottom:16px;}
+  .idea-input{display:flex;gap:12px;margin-bottom:20px;}
+  .idea-input input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 16px;color:var(--text);font-size:14px;outline:none;}
+  .idea-input input:focus{border-color:var(--accent);}
+  .idea-input button{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000;border:none;padding:10px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:13px;white-space:nowrap;}
+  .idea-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;}
+  .idea-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;cursor:pointer;transition:all 0.2s;}
+  .idea-card:hover{border-color:var(--accent);}
+  .idea-card-title{font-size:14px;font-weight:700;margin-bottom:6px;}
+  .idea-card-desc{font-size:12px;color:var(--text2);}
+  .idea-card-score{font-size:11px;font-weight:700;color:var(--success);margin-top:8px;}
+  @media(max-width:768px){.stats-bar{grid-template-columns:1fr 1fr;}.idea-input{flex-direction:column;}}
 </style>
 </head>
 <body>
-<div class="bg-grid"></div>
-
-<nav>
-  <a href="#" class="logo">
-    <div class="logo-icon"><i class="fas fa-forge" style="font-size:1rem;">⚙</i></div>
-    <span class="logo-text">ConceptForge</span>
-  </a>
-  <a href="#pricing" class="nav-cta">Start Free</a>
-</nav>
-
-<header class="hero">
-  <div class="badge"><i class="fas fa-brain"></i> AI-POWERED IDEATION ENGINE</div>
-  <h1>From raw idea to <em>validated concept</em> in minutes.</h1>
-  <p class="hero-sub">ConceptForge uses AI to generate, stress-test, and roadmap your product ideas — so you build what the market actually wants.</p>
-  <div class="hero-actions">
-    <a href="#" class="btn btn-primary"><i class="fas fa-rocket"></i> Forge Your First Concept</a>
-    <a href="#how-it-works" class="btn btn-secondary"><i class="fas fa-play"></i> See How It Works</a>
+<header>
+  <div class="logo">
+    <div class="logo-icon">🔥</div>
+    <div>
+      <div class="logo-text">ConceptForge</div>
+      <div class="logo-sub">Idea Generation Engine</div>
+    </div>
   </div>
+  <a href="https://superfastsimon.github.io/saikou-platform-dashboard/" class="back-btn">← Platform Hub</a>
 </header>
+<main>
+  <div class="hero">
+    <h1>🔥 ConceptForge Dashboard</h1>
+    <p>AI-powered business idea generation, validation, and rapid prototyping engine.</p>
+  </div>
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-n">∞</div><div class="stat-l">Ideas/day</div></div>
+    <div class="stat"><div class="stat-n">AI</div><div class="stat-l">Validated</div></div>
+    <div class="stat"><div class="stat-n">24h</div><div class="stat-l">To Prototype</div></div>
+    <div class="stat"><div class="stat-n">Auto</div><div class="stat-l">Build Mode</div></div>
+  </div>
 
-<div class="stats">
-  <div class="stat-card">
-    <div class="stat-num"><span>12,000</span>+</div>
-    <div class="stat-label">Concepts Validated</div>
+  <div class="section-title">💡 Idea Generator</div>
+  <div class="idea-gen">
+    <h3>Enter a niche or problem to generate validated business ideas</h3>
+    <div class="idea-input">
+      <input type="text" id="nicheInput" placeholder="e.g. freelancers, B2B SaaS, e-commerce..." />
+      <button onclick="generateIdeas()">⚡ Generate Ideas</button>
+    </div>
+    <div class="idea-cards" id="ideaCards">
+      <div class="idea-card">
+        <div class="idea-card-title">📧 Email Warm-Up SaaS</div>
+        <div class="idea-card-desc">Auto-warm cold email domains to avoid spam. $29/mo per domain. Freelancers + agencies target market.</div>
+        <div class="idea-card-score">Viability: 94% ★★★★★</div>
+      </div>
+      <div class="idea-card">
+        <div class="idea-card-title">📸 LinkedIn Banner AI</div>
+        <div class="idea-card-desc">Auto-generate professional LinkedIn banners from profile data. One-click, €4.99 each.</div>
+        <div class="idea-card-score">Viability: 88% ★★★★☆</div>
+      </div>
+      <div class="idea-card">
+        <div class="idea-card-title">🎯 Niche SEO Reports</div>
+        <div class="idea-card-desc">Weekly AI-generated SEO competitor reports for specific industries. €49/mo subscription.</div>
+        <div class="idea-card-score">Viability: 91% ★★★★★</div>
+      </div>
+      <div class="idea-card">
+        <div class="idea-card-title">🤝 Partnership Finder</div>
+        <div class="idea-card-desc">AI matches complementary businesses for cross-promotion. €99/mo for up to 10 partners/mo.</div>
+        <div class="idea-card-score">Viability: 79% ★★★★☆</div>
+      </div>
+    </div>
   </div>
-  <div class="stat-card">
-    <div class="stat-num"><span>94</span>%</div>
-    <div class="stat-label">Idea-Market Fit Score Accuracy</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-num"><span>3</span>min</div>
-    <div class="stat-label">Avg. Time to Full Concept Report</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-num"><span>500</span>+</div>
-    <div class="stat-label">Founders Using ConceptForge</div>
-  </div>
-</div>
 
-<section class="section">
-  <div class="section-label">Core Capabilities</div>
-  <h2 class="section-title">Everything you need to go from <em>spark to strategy</em></h2>
-  <p class="section-sub">Stop wasting months building the wrong thing. ConceptForge stress-tests your ideas against real market signals before you write a line of code.</p>
-  <div class="features-grid">
-    <div class="feature-card">
-      <div class="feature-icon"><i class="fas fa-lightbulb"></i></div>
-      <h3>AI Idea Generator</h3>
-      <p>Describe a problem space and get 20+ differentiated concept variations ranked by feasibility, novelty, and market size — in under 60 seconds.</p>
+  <div class="section-title">🚀 Concept-to-Product Pipeline</div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-icon">💡</div>
+      <div class="card-title">1. Idea Generation</div>
+      <div class="card-desc">AI generates 50+ ideas per niche daily. Scored by market size, competition, and feasibility.</div>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
-      <h3>Market Signal Analysis</h3>
-      <p>Cross-reference your concept against live trend data, Reddit discussions, and patent databases to validate demand before you invest.</p>
+    <div class="card">
+      <div class="card-icon">🔬</div>
+      <div class="card-title">2. Market Validation</div>
+      <div class="card-desc">Automated keyword research, Reddit sentiment analysis, and competitor gap identification.</div>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
-      <h3>Competitive Moat Scanner</h3>
-      <p>Automatically map competitors, identify whitespace, and surface the defensible angles that make your concept hard to clone.</p>
+    <div class="card">
+      <div class="card-icon">📐</div>
+      <div class="card-title">3. MVP Spec</div>
+      <div class="card-desc">ConceptForge outputs a ProCodePro-ready spec: features, tech stack, and user stories.</div>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon"><i class="fas fa-road"></i></div>
-      <h3>Auto Roadmap Builder</h3>
-      <p>Turn a validated concept into a phased MVP roadmap with prioritized features, estimated effort, and go-to-market milestones.</p>
+    <div class="card">
+      <div class="card-icon">⚙️</div>
+      <div class="card-title">4. Auto Build</div>
+      <div class="card-desc">Spec is passed to Genesis Protocol. Boss Agent orchestrates full build pipeline automatically.</div>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon"><i class="fas fa-users"></i></div>
-      <h3>ICP Profiler</h3>
-      <p>Generate detailed ideal customer profiles with pain points, willingness-to-pay estimates, and the channels where they actually hang out.</p>
+    <div class="card">
+      <div class="card-icon">🏷</div>
+      <div class="card-title">5. Pricing & Launch</div>
+      <div class="card-desc">AI suggests pricing based on competitor data. Landing page auto-generated and deployed.</div>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon"><i class="fas fa-file-export"></i></div>
-      <h3>Pitch-Ready Export</h3>
-      <p>Export your validated concept as a structured one-pager, slide deck outline, or investor brief — ready to share in one click.</p>
+    <div class="card">
+      <div class="card-icon">📈</div>
+      <div class="card-title">6. Growth Loop</div>
+      <div class="card-desc">Marketing agent starts SEO and outreach. Revenue tracked in Revenue Machines dashboard.</div>
     </div>
   </div>
-</section>
-
-<section class="pipeline-section" id="how-it-works">
-  <div class="pipeline-inner">
-    <div class="section-label">How It Works</div>
-    <h2 class="section-title" style="color:#fff;">Four steps from idea to <em style="background:linear-gradient(135deg,#bb86fc,#03dac6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">launch-ready concept</em></h2>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">01</div>
-        <h3>Describe Your Problem</h3>
-        <p>Type a one-sentence problem statement. No jargon needed — plain language works best.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">02</div>
-        <h3>AI Generates Concepts</h3>
-        <p>ConceptForge produces 10–20 distinct concept variations with scores for each dimension.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">03</div>
-        <h3>Validate & Stress-Test</h3>
-        <p>Run market analysis, competitor scan, and ICP profiling on your top concepts.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">04</div>
-        <h3>Export Your Strategy</h3>
-        <p>Get a full concept report with roadmap, positioning, and next actions — ready to execute.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="pricing">
-  <div class="section-label">Pricing</div>
-  <h2 class="section-title">Simple, honest pricing</h2>
-  <p class="section-sub">Start free. Upgrade when you're ready to go deep.</p>
-  <div class="pricing-grid">
-    <div class="price-card">
-      <div class="plan-name">Explorer</div>
-      <div class="price-amount"><sup>$</sup>0<sub>/mo</sub></div>
-      <div class="price-desc">For founders just getting started</div>
-      <ul class="feature-list">
-        <li><i class="fas fa-check"></i> 3 concept reports/month</li>
-        <li><i class="fas fa-check"></i> Basic market analysis</li>
-        <li><i class="fas fa-check"></i> PDF export</li>
-        <li><i class="fas fa-check"></i> Community access</li>
-      </ul>
-      <a href="#" class="btn btn-secondary btn-full">Start Free</a>
-    </div>
-    <div class="price-card featured">
-      <div class="price-badge">MOST POPULAR</div>
-      <div class="plan-name">Builder</div>
-      <div class="price-amount"><sup>$</sup>39<sub>/mo</sub></div>
-      <div class="price-desc">For active founders & small teams</div>
-      <ul class="feature-list">
-        <li><i class="fas fa-check"></i> Unlimited concept reports</li>
-        <li><i class="fas fa-check"></i> Full market signal analysis</li>
-        <li><i class="fas fa-check"></i> Competitive moat scanner</li>
-        <li><i class="fas fa-check"></i> Auto roadmap builder</li>
-        <li><i class="fas fa-check"></i> ICP profiler</li>
-        <li><i class="fas fa-check"></i> Priority support</li>
-      </ul>
-      <a href="#" class="btn btn-primary btn-full">Get Builder</a>
-    </div>
-    <div class="price-card">
-      <div class="plan-name">Studio</div>
-      <div class="price-amount"><sup>$</sup>99<sub>/mo</sub></div>
-      <div class="price-desc">For teams & accelerators</div>
-      <ul class="feature-list">
-        <li><i class="fas fa-check"></i> Everything in Builder</li>
-        <li><i class="fas fa-check"></i> 5 team seats</li>
-        <li><i class="fas fa-check"></i> API access</li>
-        <li><i class="fas fa-check"></i> Custom ICP templates</li>
-        <li><i class="fas fa-check"></i> White-label exports</li>
-        <li><i class="fas fa-check"></i> Dedicated onboarding</li>
-      </ul>
-      <a href="#" class="btn btn-secondary btn-full">Get Studio</a>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <a href="#" class="logo" style="margin-bottom:0.5rem;">
-          <div class="logo-icon">⚙</div>
-          <span class="logo-text">ConceptForge</span>
-        </a>
-        <p>AI-powered concept validation for founders who want to build the right thing the first time.</p>
-      </div>
-      <div class="footer-links">
-        <h4>Product</h4>
-        <a href="#">Features</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#">Changelog</a>
-        <a href="#">Roadmap</a>
-      </div>
-      <div class="footer-links">
-        <h4>Resources</h4>
-        <a href="#">Documentation</a>
-        <a href="#">Blog</a>
-        <a href="#">Case Studies</a>
-        <a href="#">API Docs</a>
-      </div>
-      <div class="footer-links">
-        <h4>Company</h4>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>© 2026 ConceptForge. All rights reserved.</p>
-      <p style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--primary);">POWERED BY SAIKOU TECH</p>
-    </div>
-  </div>
-</footer>
+</main>
+<script>
+const sampleIdeas = [
+  {title:'🎤 Podcast Show Notes AI', desc:'Auto-generate SEO-optimized show notes from audio. €9.99/episode or €39/mo.', score:'Viability: 92% ★★★★★'},
+  {title:'📊 Micro-SaaS Tracker', desc:'Track revenue, churn, MRR for indie hackers. Connects to Stripe. Free + €12/mo pro.', score:'Viability: 87% ★★★★☆'},
+  {title:'🌍 Translation Memory SaaS', desc:'Reuse previous translations across projects. Save 60% on translation costs. €49/mo.', score:'Viability: 83% ★★★★☆'},
+  {title:'🔔 Rank Change Alerts', desc:'Monitor Google rankings daily, alert on drops. €19/mo per site, agency plans available.', score:'Viability: 90% ★★★★★'},
+];
+function generateIdeas() {
+  const niche = document.getElementById('nicheInput').value || 'SaaS';
+  const container = document.getElementById('ideaCards');
+  container.innerHTML = sampleIdeas.map(i => `
+    <div class="idea-card">
+      <div class="idea-card-title">${i.title}</div>
+      <div class="idea-card-desc">${i.desc} <em style="color:#6c63ff">(for: ${niche})</em></div>
+      <div class="idea-card-score">${i.score}</div>
+    </div>`).join('');
+}
+</script>
 </body>
 </html>
